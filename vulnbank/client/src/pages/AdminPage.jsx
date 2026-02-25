@@ -22,7 +22,7 @@ export default function AdminPage({ auth }) {
     <section className="panel">
       <div className="section-heading">
         <h2>Admin Panel</h2>
-        <p>All platform users (endpoint intentionally lacks proper role checks).</p>
+        <p>All platform users.</p>
       </div>
 
       {error && <div className="error-box">{error}</div>}
@@ -33,7 +33,6 @@ export default function AdminPage({ auth }) {
             <th>ID</th>
             <th>Username</th>
             <th>Role</th>
-            <th>Password (insecure)</th>
             <th>Balance</th>
           </tr>
         </thead>
@@ -43,7 +42,6 @@ export default function AdminPage({ auth }) {
               <td>{user.id}</td>
               <td>{user.username}</td>
               <td>{user.role}</td>
-              <td>{user.password}</td>
               <td>${Number(user.balance).toFixed(2)}</td>
             </tr>
           ))}

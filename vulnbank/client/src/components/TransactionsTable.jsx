@@ -20,7 +20,7 @@ export default function TransactionsTable({ transactions }) {
               <td>{tx.from_username}</td>
               <td>{tx.to_username}</td>
               <td>${Number(tx.amount).toFixed(2)}</td>
-              <td dangerouslySetInnerHTML={{ __html: tx.note || '' }} />
+              <td>{tx.note}</td>
               <td>{new Date(tx.created_at).toLocaleString()}</td>
             </tr>
           ))}
