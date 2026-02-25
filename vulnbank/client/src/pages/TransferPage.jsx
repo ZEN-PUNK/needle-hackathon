@@ -3,7 +3,6 @@ import { apiRequest } from '../api';
 
 export default function TransferPage({ auth }) {
   const [form, setForm] = useState({
-    fromUserId: auth.user.id,
     toUsername: '',
     amount: '',
     note: ''
@@ -33,13 +32,6 @@ export default function TransferPage({ auth }) {
       </div>
 
       <form onSubmit={handleSubmit} className="form-grid">
-        <label>
-          From User ID
-          <input
-            value={form.fromUserId}
-            onChange={(event) => setForm((prev) => ({ ...prev, fromUserId: event.target.value }))}
-          />
-        </label>
         <label>
           Recipient Username
           <input

@@ -1,8 +1,11 @@
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
 
 const dbPath = path.join(__dirname, '..', 'database', 'vulnbank.db');
 const db = new sqlite3.Database(dbPath);
+
+const SALT_ROUNDS = 10;
 
 function initDb() {
   db.serialize(() => {
@@ -33,9 +36,21 @@ function initDb() {
       }
 
       if (row.count === 0) {
-        db.run("INSERT INTO users (username, password, role, balance) VALUES ('alice', 'password123', 'user', 2500)");
-        db.run("INSERT INTO users (username, password, role, balance) VALUES ('bob', 'password123', 'user', 1500)");
-        db.run("INSERT INTO users (username, password, role, balance) VALUES ('admin', 'admin123', 'admin', 9000)");
+        const seedUsers = [
+          { username: 'alice', password: 'password123', role: 'user', balance: 2500 },
+          { username: 'bob', password: 'password123', role: 'user', balance: 1500 },
+          { username: 'admin', password: 'admin123', role: 'admin', balance: 9000 }
+        ];
+
+        seedUsers.forEach(({ username, password, role, balance }) => {
+          bcrypt.hash(password, SALT_ROUNDS, (hashErr, hash) => {
+            if (hashErr) return;
+            db.run(
+              'INSERT INTO users (username, password, role, balance) VALUES (?, ?, ?, ?)',
+              [username, hash, role, balance]
+            );
+          });
+        });
       }
     });
   });
